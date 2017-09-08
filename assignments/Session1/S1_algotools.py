@@ -1,7 +1,7 @@
-##
-#
+## @namespace S1_algotools
+# A set of generic functions for data management
+# 
 # @author Benoit Lamit, LPro DIM, IUT Annecy le vieux, FRANCE
-# @brief a set of generic functions for data management
 
 """
 # a variable
@@ -25,7 +25,8 @@ mylist_sum=mylist+mylist2;
 """
 
 ## Compute the average of positive elements in a list
-# @param input_list an array of values
+#
+# @param input_list : an array of values
 # @return the computed average
 def average_above_zero(input_list):
     
@@ -61,52 +62,61 @@ message='The average of positive samples of {list_value} is {res}'.format(list_v
 print(message);
 """
 
-
+## Returns the highest value of a list
+# 
+# @param input_list : the input list to be scanned
+# @return the highest value in the input list, its index in the input list
+# @throws an exception (ValueError) on an empty list
 def max_value(input_list):
-    ##
-    # basic function able to return the max value of a list
-    # @param input_list : the input list to be scanned
-    # @throws an exception (ValueError) on an empty list
     
-    #first check if provided list is not empty
+    #first, check if provided list is not empty
     if len(input_list)==0:
-        raise ValueError('provided list is empty')
-    #init max_value and its index
-    max_val=input_list[0]
-    max_idx=0
-    #compute the average of positive elements of a list
-    """for item in input_list:
-        #select only positive items
-        if max_val<item:
-            max_val=item
+        raise ValueError('provided list is empty');
+    
+    #if not, init max_val and its index
+    max_val=input_list[0];
+    max_idx=0;
+    
     """
-    #generic style : iterate over the range of list indexes 
+    #iterate on range
     for idx in range(len(input_list)):
         #select only positive items
         if max_val<input_list[idx]:
-            max_val=input_list[idx]
-            max_idx=idx
+            max_val=input_list[idx];
+            max_idx=idx;
+    """
             
-    
-    #generic style : iterate over the range of list indexes 
+    #iterate on enumeration
     for idx, item in enumerate(input_list):
         #select only positive items
         if max_val<item:
-            max_val=item
-            max_idx=idx
+            max_val=item;
+            max_idx=idx;
             
             
-    return max_val, max_idx
+    return max_val, max_idx;
+
 """
-#test max_value function
-#1 basic test, expected answer=2
+#testing max_value function :
+
+#test1 : basic test (expected answer=2)
 mylist=[-1,2,-20]
-mymax, mymaxidx=max_value(mylist)
-mymax_tuple=max_value(mylist)
-mymax=mymax_tuple[0]
-print('Max value of {input_list} is {max_scan}'.format(input_list=mylist, max_scan=mymax))
+
+mymax, mymaxidx=max_value(mylist);
+print('Max value of {input_list} is ({max_scan}, {max_index})'.format(input_list=mylist, max_scan=mymax, max_index=mymaxidx));
 #==> message : "Max value of [-1, 2, -20] is (2, 1)"
 
-#2 error test : Exception expected 
-max_value([])
+mymax_tuple=max_value(mylist);
+mymax=mymax_tuple[0];
+print('Max value of {input_list} is {max_scan}'.format(input_list=mylist, max_scan=mymax));
+#==> message : "Max value of [-1, 2, -20] is 2"
+
+#test2 : error test (Exception expected)
+max_value([]);
+#==> message : Traceback (most recent call last):
+#  File "xxx/USMB-BachelorDIM-Lectures-Algorithms/assignments/Session1/S1_algotools.py", line xxx, in <module>
+#    max_value([]);
+#  File "xxx/USMB-BachelorDIM-Lectures-Algorithms/assignments/Session1/S1_algotools.py", line xxx, in max_value
+#    raise ValueError('provided list is empty');
+#ValueError: provided list is empty
 """
