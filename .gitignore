@@ -1,0 +1,10 @@
+
+\.project
+
+\.pydevproject
+
+\.scannerwork/\.sonar_lock
+
+\.scannerwork/report-task\.txt
+
+sonar-project\.properties
