@@ -3,6 +3,8 @@
 # 
 # @author Benoit Lamit, LPro DIM, IUT Annecy le vieux, FRANCE
 
+import numpy;
+
 """
 # a variable
 a=1; # default type : int
@@ -142,4 +144,58 @@ print('Input list : {input} | Reversed list {output}'.format(input=mylist, outpu
 #test2 : error test (Exception expected)
 reverse_table([]);
 #==> message : ... "provided list is empty" ...
+"""
+
+## Returns the coordinates of the minimum bounding box corners corresponding to the input array/image
+#
+# @param input_image : the binary array/image to be bounded
+# @return an array of the coordinates of the minimum bounding box
+def roi_bbox(input_image):
+    
+    #first, check if provided image is not blank
+    if len(input_image)==0:
+        raise ValueError('Provided image is blank');
+    
+    #if not, seek for bounds
+    #init the bounds to coordinates around the input image
+    min_x = input_image.shape[0];
+    max_x = -1;
+    min_y = input_image.shape[1];
+    max_y = -1;
+    
+    #read the input image and list the 1-ed points coordinates    
+    oned_points = [];
+    
+    for row in xrange(input_image.shape[0]):
+        for col in xrange(input_image.shape[1]):
+            if input_image[row][col] == 1:
+                oned_points.append([row, col]);
+                
+    #update the bounds
+    for point in oned_points:
+        if point[0] < min_x:
+            min_x = point[0];
+
+        if point[0] > max_x:
+            max_x = point[0];
+
+        if point[1] < min_y:
+            min_y = point[1];
+
+        if point[1] > max_y:
+            max_y = point[1];
+            
+
+    #return the bounds
+    return ([min_x, min_y],[max_x, min_y],[max_x,max_y],[min_x,max_y]);
+        
+"""
+#testing roi_bbox function :
+
+#test1 : basic test (random input, unexpected answer... )
+myimage=numpy.random.randint(2, size=(10, 10)); #...not a handy test...
+
+mybounds=roi_bbox(myimage);
+print('Input image : \n{input} \n Output bounds : {output}'.format(input=myimage, output=mybounds));
+#==> message : ... Output bounds : ([0, 0], [9, 0], [9, 9], [0, 9])
 """
