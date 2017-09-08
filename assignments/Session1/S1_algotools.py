@@ -199,3 +199,33 @@ mybounds=roi_bbox(myimage);
 print('Input image : \n{input} \n Output bounds : {output}'.format(input=myimage, output=mybounds));
 #==> message : ... Output bounds : ([0, 0], [9, 0], [9, 9], [0, 9])
 """
+
+## Fills an array with a random number of 'X' characters
+#
+# @param table : the array to fill
+# @param vfill : ?????????????????
+# @return the filled array
+def random_fill_sparse(table, vfill):
+    
+    #generate a random binary matrix to spot the 'X's
+    xs_positions = numpy.random.randint(2, size=(table.shape[0], table.shape[1]));
+    
+    #place 'X's inside the table where the 1s are in the matrix
+    for row in xrange(table.shape[0]):
+        for col in xrange(table.shape[1]):
+            if xs_positions[row][col] == 1:
+                table[row][col]='X';
+            else:
+                table[row][col]='';
+    
+    return table;
+    
+"""
+#testing random_fill_sparse function :
+
+#test1 : basic test (unexpected answer)
+mytable=numpy.chararray([10,10]);
+
+myfilledtable=random_fill_sparse(mytable, 0);
+print('Input table : \n{input} \n Output filled table : \n{output}'.format(input=mytable, output=myfilledtable));
+"""
