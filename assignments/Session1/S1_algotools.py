@@ -71,7 +71,7 @@ def max_value(input_list):
     
     #first, check if provided list is not empty
     if len(input_list)==0:
-        raise ValueError('provided list is empty');
+        raise ValueError('Provided list is empty');
     
     #if not, init max_val and its index
     max_val=input_list[0];
@@ -113,10 +113,33 @@ print('Max value of {input_list} is {max_scan}'.format(input_list=mylist, max_sc
 
 #test2 : error test (Exception expected)
 max_value([]);
-#==> message : Traceback (most recent call last):
-#  File "xxx/USMB-BachelorDIM-Lectures-Algorithms/assignments/Session1/S1_algotools.py", line xxx, in <module>
-#    max_value([]);
-#  File "xxx/USMB-BachelorDIM-Lectures-Algorithms/assignments/Session1/S1_algotools.py", line xxx, in max_value
-#    raise ValueError('provided list is empty');
-#ValueError: provided list is empty
+#==> message : ... "provided list is empty" ...
+"""
+
+## Returns the reversed array
+#
+# @param input_list : the array to be reversed
+# @return the reversed array
+def reverse_table(input_list):
+    
+    #first, check if provided list is not empty
+    if len(input_list)==0:
+        raise ValueError('Provided list is empty');
+    
+    #if not, return a reversed array with slice syntax   
+    return input_list[::-1];
+
+"""
+#testing reverse_table function :
+
+#test1 : basic test (exepected answer=[65, 92, 15, 14, 3])
+mylist=[3, 14, 15, 92, 65];
+
+myreversedlist = reverse_table(mylist);
+print('Input list : {input} | Reversed list {output}'.format(input=mylist, output=myreversedlist));
+#==> message : "Input list : [3, 14, 15, 92, 65] | Reversed list : [65, 92, 15, 14, 3]"
+
+#test2 : error test (Exception expected)
+reverse_table([]);
+#==> message : ... "provided list is empty" ...
 """
