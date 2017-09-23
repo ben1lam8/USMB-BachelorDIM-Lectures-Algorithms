@@ -128,8 +128,20 @@ def reverse_table(input_list):
     if len(input_list)==0:
         raise ValueError('Provided list is empty');
     
-    #if not, return a reversed array with slice syntax   
-    return input_list[::-1];
+    #if not, return a reversed array
+    length = len(input_list);
+    halfLength = length//2; #whole division
+    
+    #work on a clone list
+    output_list = list(input_list); 
+    
+    #switch values using a temp variable
+    for i in xrange(0, halfLength) :
+        temp = output_list[i];
+        output_list[i] = output_list[length-1-i];
+        output_list[length-1-i] = temp;
+
+    return output_list;
 
 """
 #testing reverse_table function :
