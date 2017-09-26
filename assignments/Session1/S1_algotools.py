@@ -241,3 +241,64 @@ mytable=numpy.chararray([10,10]);
 myfilledtable=random_fill_sparse(mytable, 0);
 print('Input table : \n{input} \n Output filled table : \n{output}'.format(input=mytable, output=myfilledtable));
 """
+
+## Removes whitespaces inside a string
+#
+# @param table : the string to clean
+# @return the cleaned string
+def remove_whitespace(table):
+    
+    #first, check if provided string is not empty
+    if len(table)==0:
+        raise ValueError('Provided string is empty');
+    
+    #if not, return a cleaned string...
+    """
+    #1 | Single line cheated solution
+    
+    return table.replace(' ', '');
+    """
+    
+    """
+    #2 | Asked solution... maybe
+    
+    #python strings are immutable...
+    #we need to "parse" it into an array
+    parsed_table = list(table);
+
+    non_space_chars = 0;
+    
+    for char in parsed_table:
+        if char != ' ': 
+            parsed_table[non_space_chars] = char;
+            non_space_chars += 1;
+            
+    #the cleaned parsed table now needs to be trimmed
+    #is there another option but slice ?
+    parsed_table = parsed_table[:non_space_chars];
+    
+    return ''.join(parsed_table);
+    """
+    
+    #"""
+    #3 | Another array-free solution :
+    #(potential memory leaks because of amounts of generated strings)
+    
+    cleaned_table = "";
+    
+    for char in table:
+        if char != ' ':
+            cleaned_table += char;
+    
+    return cleaned_table;
+    #"""
+            
+#testing remove_whitespace function :
+
+#test1 : basic test
+#expected answer : "astringtotestmyfunction"
+mytable=" a string to  test  my function  ";
+
+mycleanedtable=remove_whitespace(mytable);
+print('Input table : \n{input} \n Output cleaned table : \n{output}'.format(input=mytable, output=mycleanedtable));
+
