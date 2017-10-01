@@ -372,7 +372,7 @@ def shuffle(list_in):
     logger.debug("All indexes have been processed.");     
     return list_out;
 
-
+"""
 #testing shuffle function :
 
 #test1 : basic test
@@ -380,5 +380,96 @@ mylist=map(chr, range(97, 123));
 
 myshuffledlist=shuffle(mylist);
 print('Input list : \n{input} \n Output shuffled list : \n{output}'.format(input=mylist, output=myshuffledlist));
+"""
 
+"""
+Exercice 9 : selective sort
+(a) Illustrate the algorithm on the following vector sample : 10, 15, 7, 1, 3, 3, 9
+(b) Does the number of iterations depend on the vector content ?
+(c) How many iterations are required to sort the whole vector ?
+(d) How many permutations are applied ?
+(e) How many comparisons are applied ?
+(f) Can you quantify the algorithm complexity ?
+(g) compare the number of permutations and comparisons for input vectors of varying sizes : 50, 100 and 500
+"""
+
+## Sorts a list in the ascending order using the selective sort algorithm
+#
+# @param list_in : the list to be sorted
+# @return the sorted list
+def sort_selective(list_in):
+    
+    #Work on a clone list:
+    list_out = list(list_in);
+    
+    #Iterate trough all indexes
+    for i in xrange(len(list_out)):
         
+        #Consider the current index' value as the smallest
+        index_of_smallest = i;
+        
+        #If a smaller value is found inside the remaining values, tag its index
+        for j in xrange(i, len(list_out)):
+            if list_out[j] < list_out[index_of_smallest]:
+                index_of_smallest = j;
+        
+        #Switch the tagged value with the one at the current index
+        temp = list_out[index_of_smallest];
+        list_out[index_of_smallest] = list_out[i];
+        list_out[i] = temp;
+        
+    return list_out;
+
+"""
+#testing sort_selective function :
+
+#test1 : basic test
+mylist=list([10,15,7,1,3,3,9]);
+
+mysortedlist=sort_selective(mylist);
+print('Input list : \n{input} \nOutput sorted list : \n{output}'.format(input=mylist, output=mysortedlist));
+"""
+
+"""
+Exercice 9 : bubble sort
+(a) Illustrate the algorithm on the following vector sample : 10, 15, 7, 1,3, 3, 9
+(b) Does those number of iterations depend on the vector content ?
+(c) How many iterations are required to sort the whole vector ?
+(d) How many permutations are applied ?
+(e) How many comparisons are applied ?
+(f) Can you quantify the algorithm complexity ?
+(g) compare the number of permutations and comparisons for input vectors of varying sizes : 50, 100 and 500
+"""
+    
+## Sorts a list in the ascending order using the bubble sort algorithm
+#
+# @param list_in : the list to be sorted
+# @return the sorted list
+def sort_bubble(list_in):
+    
+    #Work on a clone list
+    list_out = list(list_in);
+    
+    #Consider the list to be sorted shorter each time
+    for i in reversed(xrange(len(list_out))):
+        
+        #Swap values if needed, until the considered top limit of the list
+        for j in xrange(i):
+            if list_out[j] > list_out[j+1]:
+                
+                temp = list_out[j];
+                list_out[j] = list_out[j+1];
+                list_out[j+1] = temp;
+    
+    return list_out;
+
+"""
+#testing sort_bubble function :
+
+#test1 : basic test
+mylist=list([10,15,7,1,3,3,9]);
+
+mysortedlist=sort_bubble(mylist);
+print('Input list : \n{input} \nOutput sorted list : \n{output}'.format(input=mylist, output=mysortedlist));
+"""
+
