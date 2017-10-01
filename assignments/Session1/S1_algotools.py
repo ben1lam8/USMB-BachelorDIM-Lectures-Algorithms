@@ -16,10 +16,10 @@ LOG_LEVEL = logging.DEBUG;
 #LOG_LEVEL = logging.CRITICAL;
 
 logger = logging.getLogger('logger');
-logger.setLevel(logging.DEBUG);
+logger.setLevel(LOG_LEVEL);
 
 ch = logging.StreamHandler();
-ch.setLevel(logging.DEBUG);
+ch.setLevel(LOG_LEVEL);
 
 formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s');
 
