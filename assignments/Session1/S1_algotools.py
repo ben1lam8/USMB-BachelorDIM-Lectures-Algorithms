@@ -3,7 +3,29 @@
 # 
 # @author Benoit Lamit, LPro DIM, IUT Annecy le vieux, FRANCE
 
+import logging;
 import numpy;
+import random;
+
+#Logger configuration. Choose one :
+
+LOG_LEVEL = logging.DEBUG;
+#LOG_LEVEL = logging.INFO;
+#LOG_LEVEL = logging.WARN;
+#LOG_LEVEL = logging.ERROR;
+#LOG_LEVEL = logging.CRITICAL;
+
+logger = logging.getLogger('logger');
+logger.setLevel(logging.DEBUG);
+
+ch = logging.StreamHandler();
+ch.setLevel(logging.DEBUG);
+
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s');
+
+ch.setFormatter(formatter);
+
+logger.addHandler(ch);
 
 """
 # a variable
@@ -293,6 +315,7 @@ def remove_whitespace(table):
     return cleaned_table;
     #"""
             
+"""
 #testing remove_whitespace function :
 
 #test1 : basic test
@@ -301,4 +324,61 @@ mytable=" a string to  test  my function  ";
 
 mycleanedtable=remove_whitespace(mytable);
 print('Input table : \n{input} \n Output cleaned table : \n{output}'.format(input=mytable, output=mycleanedtable));
+"""
 
+## Shufffles an input list in a memory-friendly way
+#
+# @param list_in : the input_list to shuffle
+# @return the shuffled list
+def shuffle(list_in):
+    logger.info("Function {func} called".format(func=shuffle.__name__));
+    logger.debug("Parameters : {lin}".format(lin=list_in));
+    
+    #Work on a clone list
+    list_out = list(list_in);
+    logger.debug("Cloned list : {lout}\n".format(lout=list_out));
+    
+    #Store indexes to be randomized
+    unselected_indexes = range(0, len(list_out));
+    
+    #Abracadabra !
+    for i in xrange(len(list_out)):
+
+        logger.debug("Remaining indexes to process : {ui}".format(ui=unselected_indexes));
+        logger.debug("Working on {ind}th index".format(ind=i));
+        
+        if not unselected_indexes or i not in unselected_indexes : 
+            logger.debug("This index has already been processed. Skipping it...\n");
+            continue;
+        
+        logger.debug("This index hasn't been processed yet !");
+            
+        unselected_indexes.remove(i);
+        logger.debug("This index won't be processed another time.");
+        
+        #Get a lucky value amongst remaining indexes
+        logger.debug("Getting a lucky other index...");
+        rand = random.choice(unselected_indexes);
+        logger.debug("Lucky index : {rd}".format(rd=rand));
+        unselected_indexes.remove(rand);
+        logger.debug("This index won't be processed another time.");
+        
+        logger.debug("Switching {idx}th and {rd}th values...".format(idx=i, rd=rand));
+        temp = list_out[i];
+        list_out[i] = list_out[rand];
+        list_out[rand] = temp;
+        logger.debug("Values switched !\n");
+    
+    logger.debug("All indexes have been processed.");     
+    return list_out;
+
+
+#testing shuffle function :
+
+#test1 : basic test
+mylist=map(chr, range(97, 123));
+
+myshuffledlist=shuffle(mylist);
+print('Input list : \n{input} \n Output shuffled list : \n{output}'.format(input=mylist, output=myshuffledlist));
+
+        
