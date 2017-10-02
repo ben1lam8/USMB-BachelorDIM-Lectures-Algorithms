@@ -1,6 +1,8 @@
 # USMB-BachelorDIM-Lectures-Algorithms
 
-MY BUILD STATUS : [![Build Status](https://travis-ci.org/ben1lam8/USMB-BachelorDIM-Lectures-Algorithms.svg?branch=master)](https://travis-ci.org/ben1lam8/USMB-BachelorDIM-Lectures-Algorithms)
+BUILD STATUS (uses TravisCI): [![Build Status](https://travis-ci.org/ben1lam8/USMB-BachelorDIM-Lectures-Algorithms.svg?branch=master)](https://travis-ci.org/ben1lam8/USMB-BachelorDIM-Lectures-Algorithms)
+
+COVERAGE (uses Coveralls): [![Coverage Status](https://coveralls.io/repos/github/ben1lam8/USMB-BachelorDIM-Lectures-Algorithms/badge.svg?branch=master)](https://coveralls.io/github/ben1lam8/USMB-BachelorDIM-Lectures-Algorithms?branch=master)
 
 Short courses on algorithms : practical recommendations to build solid, energy efficient and maintainable programs
 
