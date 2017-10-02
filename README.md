@@ -1,4 +1,7 @@
 # USMB-BachelorDIM-Lectures-Algorithms
+
+MY BUILD STATUS : [![Build Status](https://travis-ci.org/ben1lam8/USMB-BachelorDIM-Lectures-Algorithms.svg?branch=master)](https://travis-ci.org/ben1lam8/USMB-BachelorDIM-Lectures-Algorithms)
+
 Short courses on algorithms : practical recommendations to build solid, energy efficient and maintainable programs
 
 Those lessons are addressed to the "Développeur Informatique Multisupports" (DIM) Bachelor proposed at Université Savoie Mont Blanc in France.
