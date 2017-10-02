@@ -2,3 +2,9 @@
 \.project
 
 \.pydevproject
+
+\.cache/v/cache/lastfailed
+
+__pycache__/test_demo\.cpython-27-PYTEST\.pyc
+
+assignments/Session2/__pycache__/S1_algotools_test\.cpython-27-PYTEST\.pyc

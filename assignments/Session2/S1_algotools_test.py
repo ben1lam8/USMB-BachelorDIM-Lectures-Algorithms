@@ -4,7 +4,8 @@
 # @author Benoit Lamit, LPro DIM, IUT Annecy le vieux, FRANCE
 
 import imp;
-algo_tools = imp.load_source('S1_algotools', '../Session1/S1_algotools.py');
+import pytest;
+algo_tools = imp.load_source('S1_algotools', 'assignments/Session1/S1_algotools.py');
 
 #Fixtures :
 @pytest.fixture
