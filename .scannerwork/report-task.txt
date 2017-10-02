@@ -1,0 +1,7 @@
+organization=ben1lam8-github
+projectKey=Algo-prjct
+serverUrl=https://sonarcloud.io
+serverVersion=6.5.0.27571
+dashboardUrl=https://sonarcloud.io/dashboard/index/Algo-prjct
+ceTaskId=AV5huzAtLrM5sI_eZjbQ
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AV5huzAtLrM5sI_eZjbQ
