@@ -6,6 +6,8 @@
 import logging;
 import numpy;
 import random;
+from __builtin__ import int
+from boto.kinesis.exceptions import InvalidArgumentException
 
 #Logger configuration. Choose one :
 
@@ -27,26 +29,6 @@ ch.setFormatter(formatter);
 
 logger.addHandler(ch);
 
-"""
-# a variable
-a=1; # default type : int
-
-# an empty list
-mylist = [];
-
-#a filled list
-mylist2=[1,2,3];
-
-#append to a list
-mylist.append(10);
-
-# a buggy list
-mybuggylist=[1,'a', "Hi"];
-
-#operators
-b=a+2;
-mylist_sum=mylist+mylist2;
-"""
 
 ## Compute the average of positive elements in a list
 #
@@ -60,31 +42,33 @@ def average_above_zero(input_list):
     
     #compute the average of positive elements of a list
     for item in input_list:
+        
+        #check for type compatibility
+        if type(item) is None:
+            print('This value is empty : {v}'.format(v=str(item)));
+            continue;
+        
+        if type(item) not in [int,float]:
+            print('This value is not numeric : {v}'.format(v=str(item)));
+            continue;
+        
         #select only positive items
         if item>0:
             positive_values_sum+=item;
             positive_values_count+=1;
         elif item==0:
-            print('This value is null:'+str(item));
+            print('This value is null : {v}'.format(v=str(item)));
         else:
-            print('This value is negative:'+str(item));
+            print('This value is negative : {v}'.format(v=str(item)));
             
+    #check for correct computation
+    if positive_values_count==0: raise ValueError("No positive value found");
+    
     #compute the final average
     average=float(positive_values_sum)/float(positive_values_count);
-    print('Positive elements average is '+str(average));
+    print('Positive elements average is {a}'.format(a=average));
     
     return float(average);
-
-"""
-#testing average_above_zero function:
-
-mylist=[1,2,3,4,-7];
-result=average_above_zero(mylist);
-
-message='The average of positive samples of {list_value} is {res}'.format(list_value=mylist,
-                                                                          res=result);
-print(message);
-"""
 
 ## Returns the highest value of a list
 # 
@@ -97,21 +81,30 @@ def max_value(input_list):
     if len(input_list)==0:
         raise ValueError('Provided list is empty');
     
-    #if not, init max_val and its index
-    max_val=input_list[0];
-    max_idx=0;
+    #check for first valid index
+    first_valid_index = 0;
     
-    """
-    #iterate on range
-    for idx in range(len(input_list)):
-        #select only positive items
-        if max_val<input_list[idx]:
-            max_val=input_list[idx];
-            max_idx=idx;
-    """
+    while (first_valid_index < len(input_list)) and (type(input_list[first_valid_index]) is None or type(input_list[first_valid_index]) not in [int, float]):
+        first_valid_index += 1;
+        
+    if first_valid_index == len(input_list): raise ValueError("No numeric value found");
+    
+    #if checked, init max_val and its index
+    max_val=input_list[first_valid_index];
+    max_idx=first_valid_index;    
             
     #iterate on enumeration
     for idx, item in enumerate(input_list):
+        
+        #check for type compatibility
+        if type(item) is None:
+            print('This value is empty : {v}'.format(v=str(item)));
+            continue;
+        
+        if type(item) not in [int,float]:
+            print('This value is not numeric : {v}'.format(v=str(item)));
+            continue;
+        
         #select only positive items
         if max_val<item:
             max_val=item;
@@ -234,23 +227,31 @@ print('Input image : \n{input} \n Output bounds : {output}'.format(input=myimage
 #==> message : ... Output bounds : ([0, 0], [9, 0], [9, 9], [0, 9])
 """
 
-## Fills an array with a random number of 'X' characters
+## Fills a square matrix with a chosen number of 'X' characters
 #
-# @param table : the array to fill
-# @param vfill : ?????????????????
+# @param table : the square matrix to fill
+# @param vfill : the number of Xs to insert
 # @return the filled array
 def random_fill_sparse(table, vfill):
     
-    #generate a random binary matrix to spot the 'X's
-    xs_positions = numpy.random.randint(2, size=(table.shape[0], table.shape[1]));
+    #genratelucky coordinates for Xs
+    xs_abs = [];
     
-    #place 'X's inside the table where the 1s are in the matrix
-    for row in xrange(table.shape[0]):
-        for col in xrange(table.shape[1]):
-            if xs_positions[row][col] == 1:
-                table[row][col]='X';
-            else:
-                table[row][col]='';
+    while len(xs_abs) != vfill:
+        abs = random.randint(0, table.shape[0]-1);
+        if abs in xs_abs: continue;
+        xs_abs.append(abs);
+        
+    xs_ord = [];
+    
+    while len(xs_ord) != vfill:
+        ord = random.randint(0, table.shape[1]-1);
+        if ord in xs_ord: continue;
+        xs_ord.append(ord);
+    
+    #insert Xs into the table
+    for i in xrange(len(xs_abs)):
+        table[xs_abs[i]][xs_ord[i]] = 'X';
     
     return table;
     
@@ -259,8 +260,9 @@ def random_fill_sparse(table, vfill):
 
 #test1 : basic test (unexpected answer)
 mytable=numpy.chararray([10,10]);
+#mytable=numpy.zeros((10,10), "");
 
-myfilledtable=random_fill_sparse(mytable, 0);
+myfilledtable=random_fill_sparse(mytable, 10);
 print('Input table : \n{input} \n Output filled table : \n{output}'.format(input=mytable, output=myfilledtable));
 """
 
