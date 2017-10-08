@@ -7,7 +7,6 @@ import logging;
 import numpy;
 import random;
 from __builtin__ import int
-from boto.kinesis.exceptions import InvalidArgumentException
 
 #Logger configuration. Choose one :
 
