@@ -5,7 +5,7 @@
 
 import imp;
 import pytest;
-from boto.kinesis.exceptions import InvalidArgumentException
+
 algo_tools = imp.load_source('S1_algotools', 'assignments/Session1/S1_algotools.py');
 
 """ FIXTURES """
