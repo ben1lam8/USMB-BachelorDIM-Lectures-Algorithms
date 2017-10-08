@@ -113,26 +113,6 @@ def max_value(input_list):
             
     return max_val, max_idx;
 
-"""
-#testing max_value function :
-
-#test1 : basic test (expected answer=2)
-mylist=[-1,2,-20]
-
-mymax, mymaxidx=max_value(mylist);
-print('Max value of {input_list} is ({max_scan}, {max_index})'.format(input_list=mylist, max_scan=mymax, max_index=mymaxidx));
-#==> message : "Max value of [-1, 2, -20] is (2, 1)"
-
-mymax_tuple=max_value(mylist);
-mymax=mymax_tuple[0];
-print('Max value of {input_list} is {max_scan}'.format(input_list=mylist, max_scan=mymax));
-#==> message : "Max value of [-1, 2, -20] is 2"
-
-#test2 : error test (Exception expected)
-max_value([]);
-#==> message : ... "provided list is empty" ...
-"""
-
 ## Returns the reversed array
 #
 # @param input_list : the array to be reversed
@@ -147,16 +127,13 @@ def reverse_table(input_list):
     length = len(input_list);
     halfLength = length//2; #whole division
     
-    #work on a clone list
-    output_list = list(input_list); 
-    
     #switch values using a temp variable
     for i in xrange(0, halfLength) :
-        temp = output_list[i];
-        output_list[i] = output_list[length-1-i];
-        output_list[length-1-i] = temp;
+        temp = input_list[i];
+        input_list[i] = input_list[length-1-i];
+        input_list[length-1-i] = temp;
 
-    return output_list;
+    return input_list;
 
 """
 #testing reverse_table function :
