@@ -222,7 +222,10 @@ def random_fill_sparse(table, vfill):
 # @return the cleaned string
 def remove_whitespace(table):
     
-    #first, check if provided string is not empty
+    #first, check if provided string is valid
+    if type(table) is not str:
+        raise ValueError('Only strings can be processed');
+
     if len(table)==0:
         raise ValueError('Provided string is empty');
     

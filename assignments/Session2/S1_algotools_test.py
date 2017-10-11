@@ -113,6 +113,15 @@ def invalid_table_fixture():
 
     return table;
 
+@pytest.fixture
+def airy_string_fixture():
+    return " Ideo   urbs ven erab  ilis post supe rbas effer    atarum ";
+
+@pytest.fixture
+def empty_string_fixture():
+    return "";
+
+
 
 """ TESTS FOR AVERAGE_ABOVE_ZERO """
 
@@ -340,6 +349,28 @@ def test_random_fill_sparse_with_invalid_vfill(char_table_fixture):
 """ TESTS FOR REMOVE WHITESPACE """
 
 
+## Tests the remove_whitespace function, using an airy string fixture
+#
+# @param airy_string_fixture : the airy string fixture for the test
+def test_remove_whitespace_with_airy_string_fixture(airy_string_fixture):
+    result = algo_tools.remove_whitespace(airy_string_fixture);
+    assert result == "Ideourbsvenerabilispostsuperbasefferatarum";
+
+## Tests the remove_whitespace function, using an empty string fixture
+#
+# @param empty_string_fixture : the empty string fixture for the test
+def test_remove_whitespace_with_empty_string_fixture(empty_string_fixture):
+    with pytest.raises(ValueError) as verrinfo:
+        algo_tools.remove_whitespace(empty_string_fixture);
+    assert 'Provided string is empty' in str(verrinfo.value);
+
+## Tests the remove_whitespace function, using an invalid fixture
+#
+# @param positive_int_list_fixture : the invalid fixture for the test
+def test_remove_whitespace_with_invalid_fixture(positive_int_list_fixture):
+    with pytest.raises(ValueError) as verrinfo:
+        algo_tools.remove_whitespace(positive_int_list_fixture);
+    assert 'Only strings can be processed' in str(verrinfo.value);
 
 
 """ TESTS FOR SHUFFLE """
