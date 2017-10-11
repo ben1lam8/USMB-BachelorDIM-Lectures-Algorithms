@@ -6,6 +6,7 @@
 import imp;
 import pytest;
 import numpy;
+import random;
 
 algo_tools = imp.load_source('S1_algotools', 'assignments/Session1/S1_algotools.py');
 
@@ -98,6 +99,19 @@ def corrupted_matrix_fixture():
                         [0, 0, 0, 0, "wow", 0, 0, 0, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 'a']]);
+
+@pytest.fixture
+def char_table_fixture():
+    table = numpy.chararray([10,10]);
+    table[:] = '';
+
+    return table;
+
+@pytest.fixture
+def invalid_table_fixture():
+    table = numpy.zeros((10, 10))
+
+    return table;
 
 
 """ TESTS FOR AVERAGE_ABOVE_ZERO """
@@ -291,7 +305,36 @@ def test_roi_bbox_with_corrupted_matrix_fixture(corrupted_matrix_fixture):
 
 """ TESTS FOR RANDOM FILL SPARSE """
 
+## Tests the random_fill_sparse function, using a char_table fixture
+#
+# @param char_table_fixture : the char table fixture for the test
+def test_random_fill_sparse_with_char_table(char_table_fixture):
+    vfill = random.randint(0, len(char_table_fixture));
+    result = algo_tools.random_fill_sparse(char_table_fixture, vfill);
 
+    rvfill = 0;
+    for char in numpy.nditer(result):
+        if char == 'X':
+            rvfill += 1;
+
+    assert vfill == rvfill;
+
+## Tests the random_fill_sparse function, using a invalid_table fixture
+#
+# @param invalid_table_fixture : the invalid table fixture for the test
+def test_random_fill_sparse_with_invalid_table(invalid_table_fixture):
+    vfill = random.randint(0, len(invalid_table_fixture));
+    with pytest.raises(ValueError) as verrinfo:
+        algo_tools.random_fill_sparse(invalid_table_fixture, vfill);
+    assert 'Provided table is of invalid type (numpy.core.defchararray.chararray expected)' in str(verrinfo.value);
+
+## Tests the random_fill_sparse function, using a invalid vfill value
+#
+# @param char_table_fixture : the char table fixture for the test
+def test_random_fill_sparse_with_invalid_vfill(char_table_fixture):
+    with pytest.raises(ValueError) as verrinfo:
+        algo_tools.random_fill_sparse(char_table_fixture, 0);
+    assert 'Why filling with nothing ?' in str(verrinfo.value);
 
 
 """ TESTS FOR REMOVE WHITESPACE """

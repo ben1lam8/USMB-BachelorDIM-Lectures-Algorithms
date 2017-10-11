@@ -181,17 +181,6 @@ def roi_bbox(input_image):
 
     #return the bounds
     return ([min_x, min_y],[max_x, min_y],[max_x,max_y],[min_x,max_y]);
-        
-"""
-#testing roi_bbox function :
-
-#test1 : basic test (random input, unexpected answer... )
-myimage=numpy.random.randint(2, size=(10, 10)); #...not a handy test...
-
-mybounds=roi_bbox(myimage);
-print('Input image : \n{input} \n Output bounds : {output}'.format(input=myimage, output=mybounds));
-#==> message : ... Output bounds : ([0, 0], [9, 0], [9, 9], [0, 9])
-"""
 
 ## Fills a square matrix with a chosen number of 'X' characters
 #
@@ -199,8 +188,14 @@ print('Input image : \n{input} \n Output bounds : {output}'.format(input=myimage
 # @param vfill : the number of Xs to insert
 # @return the filled array
 def random_fill_sparse(table, vfill):
-    
-    #genratelucky coordinates for Xs
+
+    #check if params are valid
+    if type(table) is not numpy.core.defchararray.chararray:
+        raise ValueError('Provided table is of invalid type (numpy.core.defchararray.chararray expected)');
+    if vfill == 0 :
+        raise ValueError('Why filling with nothing ?');
+
+    #generate lucky coordinates for Xs
     xs_abs = [];
     
     while len(xs_abs) != vfill:
@@ -220,17 +215,6 @@ def random_fill_sparse(table, vfill):
         table[xs_abs[i]][xs_ord[i]] = 'X';
     
     return table;
-    
-"""
-#testing random_fill_sparse function :
-
-#test1 : basic test (unexpected answer)
-mytable=numpy.chararray([10,10]);
-#mytable=numpy.zeros((10,10), "");
-
-myfilledtable=random_fill_sparse(mytable, 10);
-print('Input table : \n{input} \n Output filled table : \n{output}'.format(input=mytable, output=myfilledtable));
-"""
 
 ## Removes whitespaces inside a string
 #
