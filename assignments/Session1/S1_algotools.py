@@ -134,21 +134,6 @@ def reverse_table(input_list):
 
     return input_list;
 
-"""
-#testing reverse_table function :
-
-#test1 : basic test (exepected answer=[65, 92, 15, 14, 3])
-mylist=[3, 14, 15, 92, 65];
-
-myreversedlist = reverse_table(mylist);
-print('Input list : {input} | Reversed list {output}'.format(input=mylist, output=myreversedlist));
-#==> message : "Input list : [3, 14, 15, 92, 65] | Reversed list : [65, 92, 15, 14, 3]"
-
-#test2 : error test (Exception expected)
-reverse_table([]);
-#==> message : ... "provided list is empty" ...
-"""
-
 ## Returns the coordinates of the minimum bounding box corners corresponding to the input array/image
 #
 # @param input_image : the binary array/image to be bounded
@@ -156,7 +141,7 @@ reverse_table([]);
 def roi_bbox(input_image):
     
     #first, check if provided image is not blank
-    if len(input_image)==0:
+    if len(input_image) == 0:
         raise ValueError('Provided image is blank');
     
     #if not, seek for bounds
@@ -171,10 +156,15 @@ def roi_bbox(input_image):
     
     for row in xrange(input_image.shape[0]):
         for col in xrange(input_image.shape[1]):
-            if input_image[row][col] == 1:
+            if type(input_image[row][col]) is numpy.int_ and input_image[row][col] == 1:
                 oned_points.append([row, col]);
+            elif type(input_image[row][col]) is not numpy.int_:
+                raise ValueError('Provided image is corrupted (a value is not a binary)');
+
+    #check if provided image is not empty
+    if len(oned_points) == 0: raise ValueError('Provided image is empty');
                 
-    #update the bounds
+    #if not, update the bounds
     for point in oned_points:
         if point[0] < min_x:
             min_x = point[0];

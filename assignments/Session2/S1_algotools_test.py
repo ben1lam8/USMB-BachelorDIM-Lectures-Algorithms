@@ -5,6 +5,7 @@
 
 import imp;
 import pytest;
+import numpy;
 
 algo_tools = imp.load_source('S1_algotools', 'assignments/Session1/S1_algotools.py');
 
@@ -32,6 +33,71 @@ def numeric_list_fixture():
 @pytest.fixture
 def complete_list_fixture():
     return [1, 'b', 2.3, "quatre", True, -5.4, False, None];
+
+@pytest.fixture
+def empty_matrix_fixture():
+    return numpy.array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]);
+
+@pytest.fixture
+def large_matrix_fixture():
+    return numpy.array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 1, 0, 0, 0, 0, 0, 0, 1, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 1, 0, 0, 0, 0, 0, 0, 1, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]);
+
+@pytest.fixture
+def medium_matrix_fixture():
+    return numpy.array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 1, 0, 0, 1, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 1, 0, 0, 1, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]);
+
+@pytest.fixture
+def biased_matrix_fixture():
+    return numpy.array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 1, 0, 1, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+                        [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]);
+
+@pytest.fixture
+def corrupted_matrix_fixture():
+    return numpy.array([[0, 0, 0, 0, 0, 0, 0, 0, None, 0],
+                        [0, 5, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, False, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 3, 0, 0, 0],
+                        [0, 2.3, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, "wow", 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 'a']]);
 
 
 """ TESTS FOR AVERAGE_ABOVE_ZERO """
@@ -180,3 +246,69 @@ def test_reverse_table_with_numeric_list_fixture(numeric_list_fixture):
 def test_reverse_table_with_complete_list_fixture(complete_list_fixture):
     result = algo_tools.reverse_table(complete_list_fixture);
     assert result == [None, False, -5.4, True, "quatre", 2.3, 'b', 1];
+
+
+""" TESTS FOR ROI_BBOX """
+
+
+## Tests the roi_bbox function, using an empty matrix fixture
+#
+# @param empty_matrix_fixture : the empty matrix fixture for the test
+def test_roi_bbox_with_empty_matrix_fixture(empty_matrix_fixture):
+    with pytest.raises(ValueError) as verrinfo:
+        algo_tools.roi_bbox(empty_matrix_fixture);
+    assert 'Provided image is empty' in str(verrinfo.value);
+
+## Tests the roi_bbox function, using a large matrix fixture
+#
+# @param large_matrix_fixture : the large matrix fixture for the test
+def test_roi_bbox_with_large_matrix_fixture(large_matrix_fixture):
+    result = algo_tools.roi_bbox(large_matrix_fixture);
+    assert result == ([1, 1], [8, 1], [8, 8], [1, 8]);
+
+## Tests the roi_bbox function, using a large matrix fixture
+#
+# @param medium_matrix_fixture : the medium matrix fixture for the test
+def test_roi_bbox_with_medium_matrix_fixture(medium_matrix_fixture):
+    result = algo_tools.roi_bbox(medium_matrix_fixture);
+    assert result == ([3, 3], [6, 3], [6, 6], [3, 6]);
+
+## Tests the roi_bbox function, using a biased matrix fixture
+#
+# @param biased_matrix_fixture : the biased matrix fixture for the test
+def test_roi_bbox_with_biased_matrix_fixture(biased_matrix_fixture):
+    result = algo_tools.roi_bbox(biased_matrix_fixture);
+    assert result == ([3, 2], [6, 2], [6, 5], [3, 5]);
+
+## Tests the roi_bbox function, using an corrupted matrix fixture
+#
+# @param corrupted_matrix_fixture : the corrupted matrix fixture for the test
+def test_roi_bbox_with_corrupted_matrix_fixture(corrupted_matrix_fixture):
+    with pytest.raises(ValueError) as verrinfo:
+        algo_tools.roi_bbox(corrupted_matrix_fixture);
+    assert 'Provided image is corrupted (a value is not a binary)' in str(verrinfo.value);
+
+
+""" TESTS FOR RANDOM FILL SPARSE """
+
+
+
+
+""" TESTS FOR REMOVE WHITESPACE """
+
+
+
+
+""" TESTS FOR SHUFFLE """
+
+
+
+
+""" TESTS FOR SORT SELECTIVE """
+
+
+
+
+""" TESTS FOR SORT BUBBLE """
+
+
