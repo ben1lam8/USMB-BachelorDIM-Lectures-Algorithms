@@ -121,6 +121,9 @@ def airy_string_fixture():
 def empty_string_fixture():
     return "";
 
+@pytest.fixture
+def alphabet_list_fixture():
+    return map(chr, range(97, 123));
 
 
 """ TESTS FOR AVERAGE_ABOVE_ZERO """
@@ -376,6 +379,13 @@ def test_remove_whitespace_with_invalid_fixture(positive_int_list_fixture):
 """ TESTS FOR SHUFFLE """
 
 
+## Tests the shuffle function, using an alphabet list fixture
+#
+# @param alphabet_list_fixture : the list fixture for the test
+def test_shuffle_with_alphabet_list_fixture(alphabet_list_fixture):
+    temp=list(alphabet_list_fixture);
+    result = algo_tools.shuffle(alphabet_list_fixture);
+    assert len(set(temp).intersection(result)) == 26 and result != temp;
 
 
 """ TESTS FOR SORT SELECTIVE """

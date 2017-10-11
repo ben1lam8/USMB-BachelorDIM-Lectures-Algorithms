@@ -269,17 +269,6 @@ def remove_whitespace(table):
     
     return cleaned_table;
     #"""
-            
-"""
-#testing remove_whitespace function :
-
-#test1 : basic test
-#expected answer : "astringtotestmyfunction"
-mytable=" a string to  test  my function  ";
-
-mycleanedtable=remove_whitespace(mytable);
-print('Input table : \n{input} \n Output cleaned table : \n{output}'.format(input=mytable, output=mycleanedtable));
-"""
 
 ## Shufffles an input list in a memory-friendly way
 #
@@ -289,15 +278,11 @@ def shuffle(list_in):
     logger.info("Function {func} called".format(func=shuffle.__name__));
     logger.debug("Parameters : {lin}".format(lin=list_in));
     
-    #Work on a clone list
-    list_out = list(list_in);
-    logger.debug("Cloned list : {lout}\n".format(lout=list_out));
-    
     #Store indexes to be randomized
-    unselected_indexes = range(0, len(list_out));
+    unselected_indexes = range(0, len(list_in));
     
     #Abracadabra !
-    for i in xrange(len(list_out)):
+    for i in xrange(len(list_in)):
 
         logger.debug("Remaining indexes to process : {ui}".format(ui=unselected_indexes));
         logger.debug("Working on {ind}th index".format(ind=i));
@@ -319,13 +304,13 @@ def shuffle(list_in):
         logger.debug("This index won't be processed another time.");
         
         logger.debug("Switching {idx}th and {rd}th values...".format(idx=i, rd=rand));
-        temp = list_out[i];
-        list_out[i] = list_out[rand];
-        list_out[rand] = temp;
+        temp = list_in[i];
+        list_in[i] = list_in[rand];
+        list_in[rand] = temp;
         logger.debug("Values switched !\n");
     
     logger.debug("All indexes have been processed.");     
-    return list_out;
+    return list_in;
 
 """
 #testing shuffle function :
