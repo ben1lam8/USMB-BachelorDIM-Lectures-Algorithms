@@ -43,7 +43,7 @@ def average_above_zero(input_list):
     for item in input_list:
         
         #check for type compatibility
-        if type(item) is None:
+        if item is None:
             logger.debug('This value is empty : {v}'.format(v=str(item)));
             continue;
         
@@ -96,7 +96,7 @@ def max_value(input_list):
     for idx, item in enumerate(input_list):
         
         #check for type compatibility
-        if type(item) is None:
+        if item is None:
             logger.debug('This value is empty : {v}'.format(v=str(item)));
             continue;
         
@@ -141,7 +141,7 @@ def reverse_table(input_list):
 def roi_bbox(input_image):
     
     #first, check if provided image is not blank
-    if len(input_image) == 0:
+    if input_image is None:
         raise ValueError('Provided image is blank');
     
     #if not, seek for bounds
@@ -339,15 +339,15 @@ def sort_selective(list_in):
         datatype = (int, float, long, complex);
     elif type(list_in[0]) in (str, unicode):
         datatype = (str, unicode);
-    elif type(list_in[0]) is bool:
-        datatype = (bool);
+    else:
+        raise ValueError('Please provide a list of comparable elements');
 
     #Iterate trough all indexes
     for i in xrange(len(list_in)):
 
         #Test for validity
         if i>0 and type(list_in[i]) not in datatype:
-            raise ValueError('Please provide a consistent list');
+            raise ValueError('Please provide a list of comparable elements');
         
         #Consider the current index' value as the smallest
         index_of_smallest = i;
@@ -391,15 +391,15 @@ def sort_bubble(list_in):
         datatype = (int, float, long, complex);
     elif type(list_in[0]) in (str, unicode):
         datatype = (str, unicode);
-    elif type(list_in[0]) is bool:
-        datatype = (bool);
+    else :
+        raise ValueError('Please provide a list of comparable elements');
     
     #Consider the list to be sorted shorter each time
     for i in reversed(xrange(len(list_in))):
 
         # Test for validity
         if i > 0 and type(list_in[i]) not in datatype:
-            raise ValueError('Please provide a consistent list');
+            raise ValueError('Please provide a list of comparable elements');
         
         #Swap values if needed, until the considered top limit of the list
         for j in xrange(i):
@@ -410,14 +410,3 @@ def sort_bubble(list_in):
                 list_in[j+1] = temp;
     
     return list_in;
-
-"""
-#testing sort_bubble function :
-
-#test1 : basic test
-mylist=list([10,15,7,1,3,3,9]);
-
-mysortedlist=sort_bubble(mylist);
-print('Input list : \n{input} \nOutput sorted list : \n{output}'.format(input=mylist, output=mysortedlist));
-"""
-

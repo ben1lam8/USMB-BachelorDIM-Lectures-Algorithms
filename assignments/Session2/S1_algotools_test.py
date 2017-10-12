@@ -49,6 +49,10 @@ def empty_matrix_fixture():
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]);
 
 @pytest.fixture
+def blank_matrix_fixture():
+    return None;
+
+@pytest.fixture
 def large_matrix_fixture():
     return numpy.array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                         [0, 1, 0, 0, 0, 0, 0, 0, 1, 0],
@@ -134,8 +138,12 @@ def mingled_char_list_fixture():
     return ['r', 'e', 's', 't', '!'];
 
 @pytest.fixture
-def mingled_complete_list_fixture():
+def mingled_complete_list1_fixture():
     return ['x', 5, -3.1, None, "upside-down", True];
+
+@pytest.fixture
+def mingled_complete_list2_fixture():
+    return [False, 5, -3.1, None, "upside-down", 'x'];
 
 
 """ TESTS FOR AVERAGE_ABOVE_ZERO """
@@ -297,6 +305,14 @@ def test_roi_bbox_with_empty_matrix_fixture(empty_matrix_fixture):
         algo_tools.roi_bbox(empty_matrix_fixture);
     assert 'Provided image is empty' in str(verrinfo.value);
 
+## Tests the roi_bbox function, using a blank matrix fixture
+#
+# @param blank_matrix_fixture : the blank matrix fixture for the test
+def test_roi_bbox_with_blank_matrix_fixture(blank_matrix_fixture):
+    with pytest.raises(ValueError) as verrinfo:
+        algo_tools.roi_bbox(blank_matrix_fixture);
+    assert 'Provided image is blank' in str(verrinfo.value);
+
 ## Tests the roi_bbox function, using a large matrix fixture
 #
 # @param large_matrix_fixture : the large matrix fixture for the test
@@ -419,11 +435,19 @@ def test_sort_selective_with_mingled_char_list_fixture(mingled_char_list_fixture
 
 ## Tests the sort selective function, using an mingled list fixture
 #
-# @param mingled_complete_list_fixture : the list fixture for the test
-def test_sort_selective_with_mingled_complete_list_fixture(mingled_complete_list_fixture):
+# @param mingled_complete_list1_fixture : the list fixture for the test
+def test_sort_selective_with_mingled_complete_list1_fixture(mingled_complete_list1_fixture):
     with pytest.raises(ValueError) as verrinfo:
-        algo_tools.sort_selective(mingled_complete_list_fixture);
-    assert 'Please provide a consistent list' in str(verrinfo.value);
+        algo_tools.sort_selective(mingled_complete_list1_fixture);
+    assert 'Please provide a list of comparable elements' in str(verrinfo.value);
+
+## Tests the sort selective function, using an mingled list fixture
+#
+# @param mingled_complete_list2_fixture : the list fixture for the test
+def test_sort_selective_with_mingled_complete_list2_fixture(mingled_complete_list2_fixture):
+    with pytest.raises(ValueError) as verrinfo:
+        algo_tools.sort_selective(mingled_complete_list2_fixture);
+    assert 'Please provide a list of comparable elements' in str(verrinfo.value);
 
 ## Tests the sort selective function, using an empty list fixture
 #
@@ -454,10 +478,18 @@ def test_sort_bubble_with_mingled_char_list_fixture(mingled_char_list_fixture):
 ## Tests the sort bubble function, using an mingled list fixture
 #
 # @param mingled_complete_list_fixture : the list fixture for the test
-def test_sort_bubble_with_mingled_complete_list_fixture(mingled_complete_list_fixture):
+def test_sort_bubble_with_mingled_complete_list1_fixture(mingled_complete_list1_fixture):
     with pytest.raises(ValueError) as verrinfo:
-        algo_tools.sort_bubble(mingled_complete_list_fixture);
-    assert 'Please provide a consistent list' in str(verrinfo.value);
+        algo_tools.sort_bubble(mingled_complete_list1_fixture);
+    assert 'Please provide a list of comparable elements' in str(verrinfo.value);
+
+## Tests the sort bubble function, using an mingled list fixture
+#
+# @param mingled_complete_list_fixture : the list fixture for the test
+def test_sort_bubble_with_mingled_complete_list2_fixture(mingled_complete_list2_fixture):
+    with pytest.raises(ValueError) as verrinfo:
+        algo_tools.sort_bubble(mingled_complete_list2_fixture);
+    assert 'Please provide a list of comparable elements' in str(verrinfo.value);
 
 ## Tests the sort bubble function, using an empty list fixture
 #
