@@ -125,6 +125,18 @@ def empty_string_fixture():
 def alphabet_list_fixture():
     return map(chr, range(97, 123));
 
+@pytest.fixture
+def mingled_numeric_list_fixture():
+    return [74.3, 5.2, -3, 41.7, 10];
+
+@pytest.fixture
+def mingled_char_list_fixture():
+    return ['r', 'e', 's', 't', '!'];
+
+@pytest.fixture
+def mingled_complete_list_fixture():
+    return ['x', 5, -3.1, None, "upside-down", True];
+
 
 """ TESTS FOR AVERAGE_ABOVE_ZERO """
 
@@ -391,8 +403,66 @@ def test_shuffle_with_alphabet_list_fixture(alphabet_list_fixture):
 """ TESTS FOR SORT SELECTIVE """
 
 
+## Tests the sort selective function, using an mingled list fixture
+#
+# @param mingled_numeric_list_fixture : the list fixture for the test
+def test_sort_selective_with_mingled_numeric_list_fixture(mingled_numeric_list_fixture):
+    result = algo_tools.sort_selective(mingled_numeric_list_fixture);
+    assert result == [-3, 5.2, 10, 41.7, 74.3];
+
+## Tests the sort selective function, using an mingled list fixture
+#
+# @param mingled_char_list_fixture : the list fixture for the test
+def test_sort_selective_with_mingled_char_list_fixture(mingled_char_list_fixture):
+    result = algo_tools.sort_selective(mingled_char_list_fixture);
+    assert result == ['!', 'e', 'r', 's', 't'];
+
+## Tests the sort selective function, using an mingled list fixture
+#
+# @param mingled_complete_list_fixture : the list fixture for the test
+def test_sort_selective_with_mingled_complete_list_fixture(mingled_complete_list_fixture):
+    with pytest.raises(ValueError) as verrinfo:
+        algo_tools.sort_selective(mingled_complete_list_fixture);
+    assert 'Please provide a consistent list' in str(verrinfo.value);
+
+## Tests the sort selective function, using an empty list fixture
+#
+# @param empty_complete_list_fixture : the list fixture for the test
+def test_sort_selective_with_empty_list_fixture(empty_list_fixture):
+    with pytest.raises(ValueError) as verrinfo:
+        algo_tools.sort_selective(empty_list_fixture);
+    assert 'Please provide a non-empty list' in str(verrinfo.value);
 
 
 """ TESTS FOR SORT BUBBLE """
 
 
+## Tests the sort bubble function, using an mingled list fixture
+#
+# @param mingled_numeric_list_fixture : the list fixture for the test
+def test_sort_bubble_with_mingled_numeric_list_fixture(mingled_numeric_list_fixture):
+    result = algo_tools.sort_bubble(mingled_numeric_list_fixture);
+    assert result == [-3, 5.2, 10, 41.7, 74.3];
+
+## Tests the sort bubble function, using an mingled list fixture
+#
+# @param mingled_char_list_fixture : the list fixture for the test
+def test_sort_bubble_with_mingled_char_list_fixture(mingled_char_list_fixture):
+    result = algo_tools.sort_bubble(mingled_char_list_fixture);
+    assert result == ['!', 'e', 'r', 's', 't'];
+
+## Tests the sort bubble function, using an mingled list fixture
+#
+# @param mingled_complete_list_fixture : the list fixture for the test
+def test_sort_bubble_with_mingled_complete_list_fixture(mingled_complete_list_fixture):
+    with pytest.raises(ValueError) as verrinfo:
+        algo_tools.sort_bubble(mingled_complete_list_fixture);
+    assert 'Please provide a consistent list' in str(verrinfo.value);
+
+## Tests the sort bubble function, using an empty list fixture
+#
+# @param empty_complete_list_fixture : the list fixture for the test
+def test_sort_bubble_with_empty_list_fixture(empty_list_fixture):
+    with pytest.raises(ValueError) as verrinfo:
+        algo_tools.sort_bubble(empty_list_fixture);
+    assert 'Please provide a non-empty list' in str(verrinfo.value);

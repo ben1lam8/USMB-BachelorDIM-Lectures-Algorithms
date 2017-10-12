@@ -10,11 +10,11 @@ from __builtin__ import int
 
 #Logger configuration. Choose one :
 
-LOG_LEVEL = logging.DEBUG;
+#LOG_LEVEL = logging.DEBUG;
 #LOG_LEVEL = logging.INFO;
 #LOG_LEVEL = logging.WARN;
 #LOG_LEVEL = logging.ERROR;
-#LOG_LEVEL = logging.CRITICAL;
+LOG_LEVEL = logging.CRITICAL;
 
 logger = logging.getLogger('logger');
 logger.setLevel(LOG_LEVEL);
@@ -44,11 +44,11 @@ def average_above_zero(input_list):
         
         #check for type compatibility
         if type(item) is None:
-            print('This value is empty : {v}'.format(v=str(item)));
+            logger.debug('This value is empty : {v}'.format(v=str(item)));
             continue;
         
         if type(item) not in [int,float]:
-            print('This value is not numeric : {v}'.format(v=str(item)));
+            logger.debug('This value is not numeric : {v}'.format(v=str(item)));
             continue;
         
         #select only positive items
@@ -56,16 +56,16 @@ def average_above_zero(input_list):
             positive_values_sum+=item;
             positive_values_count+=1;
         elif item==0:
-            print('This value is null : {v}'.format(v=str(item)));
+            logger.debug('This value is null : {v}'.format(v=str(item)));
         else:
-            print('This value is negative : {v}'.format(v=str(item)));
+            logger.debug('This value is negative : {v}'.format(v=str(item)));
             
     #check for correct computation
     if positive_values_count==0: raise ValueError("No positive value found");
     
     #compute the final average
     average=float(positive_values_sum)/float(positive_values_count);
-    print('Positive elements average is {a}'.format(a=average));
+    logger.debug('Positive elements average is {a}'.format(a=average));
     
     return float(average);
 
@@ -97,11 +97,11 @@ def max_value(input_list):
         
         #check for type compatibility
         if type(item) is None:
-            print('This value is empty : {v}'.format(v=str(item)));
+            logger.debug('This value is empty : {v}'.format(v=str(item)));
             continue;
         
         if type(item) not in [int,float]:
-            print('This value is not numeric : {v}'.format(v=str(item)));
+            logger.debug('This value is not numeric : {v}'.format(v=str(item)));
             continue;
         
         #select only positive items
@@ -313,16 +313,6 @@ def shuffle(list_in):
     return list_in;
 
 """
-#testing shuffle function :
-
-#test1 : basic test
-mylist=map(chr, range(97, 123));
-
-myshuffledlist=shuffle(mylist);
-print('Input list : \n{input} \n Output shuffled list : \n{output}'.format(input=mylist, output=myshuffledlist));
-"""
-
-"""
 Exercice 9 : selective sort
 (a) Illustrate the algorithm on the following vector sample : 10, 15, 7, 1, 3, 3, 9
 (b) Does the number of iterations depend on the vector content ?
@@ -338,37 +328,41 @@ Exercice 9 : selective sort
 # @param list_in : the list to be sorted
 # @return the sorted list
 def sort_selective(list_in):
-    
-    #Work on a clone list:
-    list_out = list(list_in);
-    
+
+    #Test for emptyness
+    if len(list_in) == 0:
+        raise ValueError('Please provide a non-empty list');
+
+    #Remember the data type (not in a pythonic way...)
+    datatype = None;
+    if type(list_in[0]) in (int, float, long, complex):
+        datatype = (int, float, long, complex);
+    elif type(list_in[0]) in (str, unicode):
+        datatype = (str, unicode);
+    elif type(list_in[0]) is bool:
+        datatype = (bool);
+
     #Iterate trough all indexes
-    for i in xrange(len(list_out)):
+    for i in xrange(len(list_in)):
+
+        #Test for validity
+        if i>0 and type(list_in[i]) not in datatype:
+            raise ValueError('Please provide a consistent list');
         
         #Consider the current index' value as the smallest
         index_of_smallest = i;
         
         #If a smaller value is found inside the remaining values, tag its index
-        for j in xrange(i, len(list_out)):
-            if list_out[j] < list_out[index_of_smallest]:
+        for j in xrange(i, len(list_in)):
+            if list_in[j] < list_in[index_of_smallest]:
                 index_of_smallest = j;
         
         #Switch the tagged value with the one at the current index
-        temp = list_out[index_of_smallest];
-        list_out[index_of_smallest] = list_out[i];
-        list_out[i] = temp;
+        temp = list_in[index_of_smallest];
+        list_in[index_of_smallest] = list_in[i];
+        list_in[i] = temp;
         
-    return list_out;
-
-"""
-#testing sort_selective function :
-
-#test1 : basic test
-mylist=list([10,15,7,1,3,3,9]);
-
-mysortedlist=sort_selective(mylist);
-print('Input list : \n{input} \nOutput sorted list : \n{output}'.format(input=mylist, output=mysortedlist));
-"""
+    return list_in;
 
 """
 Exercice 9 : bubble sort
@@ -386,22 +380,36 @@ Exercice 9 : bubble sort
 # @param list_in : the list to be sorted
 # @return the sorted list
 def sort_bubble(list_in):
-    
-    #Work on a clone list
-    list_out = list(list_in);
+
+    # Test for emptyness
+    if len(list_in) == 0:
+        raise ValueError('Please provide a non-empty list');
+
+    # Remember the data type (not in a pythonic way...)
+    datatype = None;
+    if type(list_in[0]) in (int, float, long, complex):
+        datatype = (int, float, long, complex);
+    elif type(list_in[0]) in (str, unicode):
+        datatype = (str, unicode);
+    elif type(list_in[0]) is bool:
+        datatype = (bool);
     
     #Consider the list to be sorted shorter each time
-    for i in reversed(xrange(len(list_out))):
+    for i in reversed(xrange(len(list_in))):
+
+        # Test for validity
+        if i > 0 and type(list_in[i]) not in datatype:
+            raise ValueError('Please provide a consistent list');
         
         #Swap values if needed, until the considered top limit of the list
         for j in xrange(i):
-            if list_out[j] > list_out[j+1]:
+            if list_in[j] > list_in[j+1]:
                 
-                temp = list_out[j];
-                list_out[j] = list_out[j+1];
-                list_out[j+1] = temp;
+                temp = list_in[j];
+                list_in[j] = list_in[j+1];
+                list_in[j+1] = temp;
     
-    return list_out;
+    return list_in;
 
 """
 #testing sort_bubble function :
