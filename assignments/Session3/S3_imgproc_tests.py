@@ -5,9 +5,21 @@
 
 import imp;
 import pytest;
+import cv2;
 
 imgproc_tools = imp.load_source('S3_imgproc_tools', 'assignments/Session3/S3_imgproc_tools.py');
 
+@pytest.fixture
+def empty_fixture():
+    return None;
+
+@pytest.fixture
+def grayscale_image():
+    return cv2.imread('assignments/Session3/myimage.jpg',0);
+
+@pytest.fixture
+def color_image():
+    return cv2.imread('assignments/Session3/myimage.jpg',1);
 
 """ INVERT_COLOR_MANUAL"""
 
