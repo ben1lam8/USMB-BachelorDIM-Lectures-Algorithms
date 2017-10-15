@@ -32,7 +32,7 @@ def invert_colors_manual(input_img):
     # If not, create the new image
     color_scale = 'RGB' if input_img.ndim == 3 else 'GrayScale'; # pythonic ternary
 
-    if color_scale == 'RGB' :
+    if color_scale == 'RGB':
         output_img = numpy.zeros((input_img.shape[0], input_img.shape[1], 3), input_img.dtype);
     else:
         output_img = numpy.zeros((input_img.shape[0], input_img.shape[1]), input_img.dtype);
@@ -50,5 +50,52 @@ def invert_colors_manual(input_img):
             for y in xrange(input_img.shape[1]-1):
 
                 output_img[x][y] = 255 - input_img[x][y];
+
+    return output_img;
+
+## Apply a threshold for the value of each pixel on each color canal
+#
+# @param input_img : an numpy array holding the input image data
+# @return the compressed image as numpy array
+def threshold_image_numpy(input_img, threshold):
+
+    # Check if empty
+    if type(input_img) is not numpy.ndarray or input_img.shape == (0, 0):
+        raise ValueError('Please provide a valid image');
+
+    # If not, check the threshold type and its convenience
+    color_scale = 'RGB' if input_img.ndim == 3 else 'GrayScale';  # pythonic ternary
+
+    if type(threshold) is int:
+        threshold_type = 'Monovalue';
+    elif type(threshold) is list and len(threshold) == 3:
+        threshold_type = 'Array';
+    else:
+        raise ValueError('Please provide a convenient threshold value');
+
+    if threshold_type == 'Array' and color_scale is not 'RGB':
+        raise ValueError('Please provide a convenient threshold value');
+
+    # If everything is OK, apply the threshold
+    if color_scale == 'RGB':
+        output_img = numpy.zeros((input_img.shape[0], input_img.shape[1], 3), input_img.dtype);
+    else:
+        output_img = numpy.zeros((input_img.shape[0], input_img.shape[1]), input_img.dtype);
+
+    if color_scale == 'RGB':
+        for x in xrange(input_img.shape[0] - 1):
+            for y in xrange(input_img.shape[1] - 1):
+                if threshold_type == 'Array':
+                    output_img[x][y][0] = threshold[0] if input_img[x][y][0] >= threshold[0] else input_img[x][y][0];
+                    output_img[x][y][1] = threshold[1] if input_img[x][y][1] >= threshold[1] else input_img[x][y][1];
+                    output_img[x][y][2] = threshold[2] if input_img[x][y][2] >= threshold[2] else input_img[x][y][2];
+                else:
+                    output_img[x][y][0] = threshold if input_img[x][y][0] >= threshold else input_img[x][y][0];
+                    output_img[x][y][1] = threshold if input_img[x][y][1] >= threshold else input_img[x][y][1];
+                    output_img[x][y][2] = threshold if input_img[x][y][2] >= threshold else input_img[x][y][2];
+    else:
+        for x in xrange(input_img.shape[0] - 1):
+            for y in xrange(input_img.shape[1] - 1):
+                output_img[x][y] = threshold if input_img[x][y] >= threshold else input_img[x][y];
 
     return output_img;

@@ -8,6 +8,10 @@ import pytest;
 
 imgproc_tools = imp.load_source('S3_imgproc_tools', 'assignments/Session3/S3_imgproc_tools.py');
 
+
+""" INVERT_COLOR_MANUAL"""
+
+
 ## Tests the invert_color_manual function, using an empty fixture
 #
 # @param empty_fixture : the empty fixture for the test
@@ -51,3 +55,65 @@ def test_invert_colors_manual_with_color_image(color_image):
         if not inverted: break;
 
     assert inverted;
+
+
+""" THRESHOLD_IMAGE_NUMPY """
+
+
+## Tests threshold_image_numpy function, using an empty fixture
+#
+# @param empty_fixture : the empty fixture for the test
+def test_threshold_image_numpy_with_empty_fixture(empty_fixture):
+    with pytest.raises(ValueError) as verrinfo:
+        imgproc_tools.threshold_image_numpy(empty_fixture, 127);
+    assert 'Please provide a valid image' in str(verrinfo.value);
+
+## Tests threshold_image_numpy function, using a grayscale image
+#
+# @param grayscale_image : the grayscale image for the test
+def test_threshold_image_numpy_with_grayscale_image(grayscale_image):
+    threshold = 127;
+    compressed_image = imgproc_tools.threshold_image_numpy(grayscale_image, threshold);
+
+    compressed = True;
+
+    for x in xrange(compressed_image.shape[0] - 1):
+        for y in xrange(compressed_image.shape[0] - 1):
+            compressed = \
+                (grayscale_image[x][y] >= threshold == compressed_image[x][y]) \
+                or \
+                (threshold >= grayscale_image[x][y] == compressed_image[x][y]);
+            if not compressed: break;
+        if not compressed: break;
+
+    assert compressed;
+
+## Tests the threshold_image_numpy function, using a color image
+#
+# @param color_image : the color image for the test
+def test_threshold_image_numpy_with_color_image(color_image):
+    threshold = [100, 125, 150];
+    compressed_image = imgproc_tools.threshold_image_numpy(color_image, threshold);
+
+    compressed = True;
+
+    for x in xrange(compressed_image.shape[0] - 1):
+        for y in xrange(compressed_image.shape[0] - 1):
+            compressed = \
+                (color_image[x][y][0] >= threshold[0] == compressed_image[x][y][0]) \
+                or \
+                (threshold[0] >= color_image[x][y][0] == compressed_image[x][y][0]);
+            if not compressed: break;
+            compressed = \
+                (color_image[x][y][1] >= threshold[1] == compressed_image[x][y][1]) \
+                or \
+                (threshold[1] >= color_image[x][y][1] == compressed_image[x][y][1]);
+            if not compressed: break;
+            compressed = \
+                (color_image[x][y][2] >= threshold[2] == compressed_image[x][y][2]) \
+                or \
+                (threshold[2] >= color_image[x][y][2] == compressed_image[x][y][2]);
+            if not compressed: break;
+        if not compressed: break;
+
+    assert compressed;
