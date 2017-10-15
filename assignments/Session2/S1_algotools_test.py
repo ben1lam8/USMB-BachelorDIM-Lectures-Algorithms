@@ -283,7 +283,7 @@ def test_reverse_table_with_relative_int_list_fixture(relative_int_list_fixture)
 # @param numeric_list_fixture : the numeric list fixture for the test
 def test_reverse_table_with_numeric_list_fixture(numeric_list_fixture):
     result = algo_tools.reverse_table(numeric_list_fixture);
-    assert result == [-9, 6.7, -4.5, 3, -1.2];
+    assert result == [0, -9, 6.7, -4.5, 3, -1.2];
 
 
 ## Tests the reverse_table function, using a numeric list fixture
