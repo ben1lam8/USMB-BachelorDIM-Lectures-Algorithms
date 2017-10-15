@@ -8,13 +8,13 @@ import pytest;
 import cv2;
 
 @pytest.fixture
-def empty_fixture():  # pragma: no cover
+def empty_fixture():
     return None;
 
 @pytest.fixture
-def grayscale_image():  # pragma: no cover
+def grayscale_image():
     return cv2.imread('assignments/Session3/myimage.jpg',0);
 
 @pytest.fixture
-def color_image():  # pragma: no cover
+def color_image():
     return cv2.imread('assignments/Session3/myimage.jpg',1);
