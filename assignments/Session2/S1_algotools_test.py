@@ -29,7 +29,7 @@ def relative_int_list_fixture():
 
 @pytest.fixture
 def numeric_list_fixture():
-    return [-1.2, 3, -4.5, 6.7, -9];
+    return [-1.2, 3, -4.5, 6.7, -9, 0];
 
 @pytest.fixture
 def complete_list_fixture():
