@@ -72,20 +72,20 @@ def test_invert_colors_manual_with_color_image(color_image):
 """ THRESHOLD_IMAGE_NUMPY """
 
 
-## Tests threshold_image_numpy function, using an empty fixture
+## Tests threshold_image_manual function, using an empty fixture
 #
 # @param empty_fixture : the empty fixture for the test
-def test_threshold_image_numpy_with_empty_fixture(empty_fixture):
+def test_threshold_image_manual_with_empty_fixture(empty_fixture):
     with pytest.raises(ValueError) as verrinfo:
-        imgproc_tools.threshold_image_numpy(empty_fixture, 127);
+        imgproc_tools.threshold_image_manual(empty_fixture, 127);
     assert 'Please provide a valid image' in str(verrinfo.value);
 
 ## Tests threshold_image_numpy function, using a grayscale image
 #
 # @param grayscale_image : the grayscale image for the test
-def test_threshold_image_numpy_with_grayscale_image(grayscale_image):
+def test_threshold_image_manual_with_grayscale_image(grayscale_image):
     threshold = 127;
-    compressed_image = imgproc_tools.threshold_image_numpy(grayscale_image, threshold);
+    compressed_image = imgproc_tools.threshold_image_manual(grayscale_image, threshold);
 
     compressed = True;
 
@@ -103,9 +103,9 @@ def test_threshold_image_numpy_with_grayscale_image(grayscale_image):
 ## Tests the threshold_image_numpy function, using a color image
 #
 # @param color_image : the color image for the test
-def test_threshold_image_numpy_with_color_image(color_image):
+def test_threshold_image_manual_with_color_image(color_image):
     threshold = [100, 125, 150];
-    compressed_image = imgproc_tools.threshold_image_numpy(color_image, threshold);
+    compressed_image = imgproc_tools.threshold_image_manual(color_image, threshold);
 
     compressed = True;
 

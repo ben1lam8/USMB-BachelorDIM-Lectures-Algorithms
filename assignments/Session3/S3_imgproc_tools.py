@@ -41,7 +41,7 @@ def invert_colors_manual(input_img):
     if color_scale == 'RGB':
         for x in xrange(input_img.shape[0]-1):
             for y in xrange(input_img.shape[1]-1):
-
+                # Could be a third-level - almost useless - nested loop ...
                 output_img[x][y][0] = 255 - input_img[x][y][0];
                 output_img[x][y][1] = 255 - input_img[x][y][1];
                 output_img[x][y][2] = 255 - input_img[x][y][2];
@@ -53,11 +53,11 @@ def invert_colors_manual(input_img):
 
     return output_img;
 
-## Apply a threshold for the value of each pixel on each color canal
+## Apply a threshold for the value of each pixel on each color channel
 #
 # @param input_img : an numpy array holding the input image data
 # @return the compressed image as numpy array
-def threshold_image_numpy(input_img, threshold):
+def threshold_image_manual(input_img, threshold):
 
     # Check if empty
     if type(input_img) is not numpy.ndarray or input_img.shape == (0, 0):
@@ -86,10 +86,12 @@ def threshold_image_numpy(input_img, threshold):
         for x in xrange(input_img.shape[0] - 1):
             for y in xrange(input_img.shape[1] - 1):
                 if threshold_type == 'Array':
+                    # Could be a third-level - almost useless - nested loop ...
                     output_img[x][y][0] = threshold[0] if input_img[x][y][0] >= threshold[0] else input_img[x][y][0];
                     output_img[x][y][1] = threshold[1] if input_img[x][y][1] >= threshold[1] else input_img[x][y][1];
                     output_img[x][y][2] = threshold[2] if input_img[x][y][2] >= threshold[2] else input_img[x][y][2];
                 else:
+                    # Could be a third-level - almost useless - nested loop ...
                     output_img[x][y][0] = threshold if input_img[x][y][0] >= threshold else input_img[x][y][0];
                     output_img[x][y][1] = threshold if input_img[x][y][1] >= threshold else input_img[x][y][1];
                     output_img[x][y][2] = threshold if input_img[x][y][2] >= threshold else input_img[x][y][2];
