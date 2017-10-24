@@ -32,7 +32,7 @@ def read():
     def callback(ch, method, properties, body):
         global count;
         count += 1;
-        print("--- Incoming message (n°{c}) ---".format(c=count));
+        print("--- Incoming message (num {c}) ---".format(c=count));
         print("Content : %r" % body);
 
     # Define a consumer behaviour
@@ -41,7 +41,7 @@ def read():
                           no_ack=True);
 
     # Wait for incomes
-    print("Waiting for incomes ... (Ctrl+C to quit");
+    print("Waiting for incomes ... (Ctrl+C to quit)");
     channel.start_consuming();
 
 
