@@ -69,7 +69,7 @@ def test_invert_colors_manual_with_color_image(color_image):
     assert inverted;
 
 
-""" THRESHOLD_IMAGE_NUMPY """
+""" THRESHOLD_IMAGE_MANUAL """
 
 
 ## Tests threshold_image_manual function, using an empty fixture
