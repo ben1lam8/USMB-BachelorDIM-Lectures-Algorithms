@@ -21,7 +21,7 @@ cv2.waitKey();
 
 ## Invert the value of each pixel on each color canal
 #
-# @param input_img : an numpy array holding the input image data
+# @param input_img : a numpy array holding the input image data
 # @return the color inverted image as numpy array
 def invert_colors_manual(input_img):
 
@@ -55,7 +55,7 @@ def invert_colors_manual(input_img):
 
 ## Apply a threshold for the value of each pixel on each color channel
 #
-# @param input_img : an numpy array holding the input image data
+# @param input_img : a numpy array holding the input image data
 # @return the compressed image as numpy array
 def threshold_image_manual(input_img, threshold):
 
@@ -104,7 +104,7 @@ def threshold_image_manual(input_img, threshold):
 
 ## Apply a threshold for the value of each pixel on each color channel. Uses the numpy library.
 #
-# @param input_img : an numpy array holding the input image data
+# @param input_img : a numpy array holding the input image data
 # @return the compressed image as numpy array
 def threshold_image_numpy(input_img, threshold):
 
@@ -129,3 +129,34 @@ def threshold_image_numpy(input_img, threshold):
     output_img = ((input_img > threshold) * 255).astype(input_img.dtype);
 
     return output_img;
+
+
+## Apply a threshold for the value of each pixel on each color channel. Uses the opencv OTSU method.
+# If no threshold is provided (or if it's null), the optimal one will be chosen and printed
+#
+# @param input_img : a numpy array holding the input image data
+# @return the compressed image as numpy array
+def threshold_colors_opencv(input_img):
+    # Check if empty
+    if type(input_img) is not numpy.ndarray or input_img.shape == (0, 0):
+        raise ValueError('Please provide a valid image');
+
+    # If not, check the image type
+    color_scale = 'RGB' if input_img.ndim == 3 else 'GrayScale';  # pythonic ternary
+
+    # If everything is OK, apply the threshold
+    if color_scale == 'RGB':
+        b, g, r = cv2.split(input_img);
+
+        thr_b, out_b = cv2.threshold(b, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU);
+        thr_g, out_g = cv2.threshold(g, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU);
+        thr_r, out_r = cv2.threshold(r, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU);
+
+        thr = [thr_b, thr_g, thr_r];
+
+        output_img = cv2.merge([out_b, out_g, out_r]);
+
+    else:
+        thr, output_img = cv2.threshold(input_img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU);
+
+    return thr, output_img;

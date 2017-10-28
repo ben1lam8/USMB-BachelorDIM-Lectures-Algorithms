@@ -291,3 +291,72 @@ def test_threshold_image_numpy_with_unconvenient_threshold_type(grayscale_image)
     with pytest.raises(ValueError) as verrinfo:
         imgproc_tools.threshold_image_numpy(grayscale_image, threshold);
     assert 'Please provide a convenient threshold value' in str(verrinfo.value);
+
+
+""" THRESHOLD_COLORS_OPENCV """
+
+
+## Tests threshold_colors_opencv function, using an empty fixture
+#
+# @param empty_fixture : the empty fixture for the test
+def test_threshold_colors_opencv_with_empty_fixture(empty_fixture):
+    with pytest.raises(ValueError) as verrinfo:
+        imgproc_tools.threshold_colors_opencv(empty_fixture);
+    assert 'Please provide a valid image' in str(verrinfo.value);
+
+## Tests threshold_colors_opencv function, using a grayscale image
+#
+# @param grayscale_image : the grayscale image for the test
+def test_threshold_colors_opencv_with_grayscale_image(grayscale_image):
+    threshold, thresholded_image = imgproc_tools.threshold_colors_opencv(grayscale_image);
+
+    thresholded = True;
+
+    for x in xrange(thresholded_image.shape[0] - 1):
+        for y in xrange(thresholded_image.shape[0] - 1):
+            thresholded = \
+                (grayscale_image[x][y] >= threshold and thresholded_image[x][y] == 255) \
+                or \
+                (threshold >= grayscale_image[x][y] and thresholded_image[x][y] == 0);
+            if not thresholded: break;
+        if not thresholded: break;
+
+    assert thresholded;
+
+## Tests the threshold_colors_opencv function, using a color image
+#
+# @param color_image : the color image for the test
+def test_threshold_colors_opencv_with_color_image(color_image):
+    threshold, thresholded_image = imgproc_tools.threshold_colors_opencv(color_image);
+
+    thresholded = True;
+
+    for x in xrange(thresholded_image.shape[0] - 1):
+        for y in xrange(thresholded_image.shape[0] - 1):
+            thresholded = \
+                (color_image[x][y][0] >= threshold[0] and thresholded_image[x][y][0] == 255) \
+                or \
+                (threshold[0] >= color_image[x][y][0] and thresholded_image[x][y][0] == 0);
+            if not thresholded: break;
+            thresholded = \
+                (color_image[x][y][1] >= threshold[1] and thresholded_image[x][y][1] == 255) \
+                or \
+                (threshold[1] >= color_image[x][y][1] and thresholded_image[x][y][1] == 0);
+            if not thresholded: break;
+            thresholded = \
+                (color_image[x][y][2] >= threshold[2] and thresholded_image[x][y][2] == 255) \
+                or \
+                (threshold[2] >= color_image[x][y][2] and thresholded_image[x][y][2] == 0);
+            if not thresholded: break;
+        if not thresholded: break;
+
+    assert thresholded;
+
+
+""" NOTE : When using functions from library imports, tests can't be as accurate as when using hand made functions.
+i.e. to be able to check threshold processes on output images with opencv functions, we have to pull back the effective
+optimal thresholds computed by the OTSU-y function. The tested function prototype may have to change to allow this...
+
+To display each test execution time, add the argument "--durations=0" to the pytest launch command.
+We can thus notice that hierarchy of time consumption : manual > numpy ~ opencv
+"""
