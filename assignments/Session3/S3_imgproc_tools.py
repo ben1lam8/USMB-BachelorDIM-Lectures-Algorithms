@@ -87,17 +87,45 @@ def threshold_image_manual(input_img, threshold):
             for y in xrange(input_img.shape[1] - 1):
                 if threshold_type == 'Array':
                     # Could be a third-level - almost useless - nested loop ...
-                    output_img[x][y][0] = threshold[0] if input_img[x][y][0] >= threshold[0] else input_img[x][y][0];
-                    output_img[x][y][1] = threshold[1] if input_img[x][y][1] >= threshold[1] else input_img[x][y][1];
-                    output_img[x][y][2] = threshold[2] if input_img[x][y][2] >= threshold[2] else input_img[x][y][2];
+                    output_img[x][y][0] = 255 if input_img[x][y][0] >= threshold[0] else 0;
+                    output_img[x][y][1] = 255 if input_img[x][y][1] >= threshold[1] else 0;
+                    output_img[x][y][2] = 255 if input_img[x][y][2] >= threshold[2] else 0;
                 else:
                     # Could be a third-level - almost useless - nested loop ...
-                    output_img[x][y][0] = threshold if input_img[x][y][0] >= threshold else input_img[x][y][0];
-                    output_img[x][y][1] = threshold if input_img[x][y][1] >= threshold else input_img[x][y][1];
-                    output_img[x][y][2] = threshold if input_img[x][y][2] >= threshold else input_img[x][y][2];
+                    output_img[x][y][0] = 255 if input_img[x][y][0] >= threshold else 0;
+                    output_img[x][y][1] = 255 if input_img[x][y][1] >= threshold else 0;
+                    output_img[x][y][2] = 255 if input_img[x][y][2] >= threshold else 0;
     else:
         for x in xrange(input_img.shape[0] - 1):
             for y in xrange(input_img.shape[1] - 1):
-                output_img[x][y] = threshold if input_img[x][y] >= threshold else input_img[x][y];
+                output_img[x][y] = 255 if input_img[x][y] >= threshold else 0;
+
+    return output_img;
+
+## Apply a threshold for the value of each pixel on each color channel. Uses the numpy library.
+#
+# @param input_img : an numpy array holding the input image data
+# @return the compressed image as numpy array
+def threshold_image_numpy(input_img, threshold):
+
+    # Check if empty
+    if type(input_img) is not numpy.ndarray or input_img.shape == (0, 0):
+        raise ValueError('Please provide a valid image');
+
+    # If not, check the threshold type and its convenience
+    color_scale = 'RGB' if input_img.ndim == 3 else 'GrayScale';  # pythonic ternary
+
+    if type(threshold) is int:
+        threshold_type = 'Monovalue';
+    elif type(threshold) is list and len(threshold) == 3:
+        threshold_type = 'Array';
+    else:
+        raise ValueError('Please provide a convenient threshold value');
+
+    if threshold_type == 'Array' and color_scale is not 'RGB':
+        raise ValueError('Please provide a convenient threshold value');
+
+    # If everything is OK, apply the threshold... with kind of magic :o
+    output_img = ((input_img > threshold) * 255).astype(input_img.dtype);
 
     return output_img;
