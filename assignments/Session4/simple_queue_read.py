@@ -9,6 +9,8 @@ import pika;
 import os;
 
 
+count = 0;
+
 def read():
     # Configure connection
     instance_provider = "CloudAMQP";
@@ -30,8 +32,10 @@ def read():
 
     def callback(ch, method, properties, body):
 
-        print("--- Message received ---");
-        print("Content : %r" % body);
+        global count;
+        count += 1;
+        print("--- Message #{c} received ---".format(c=count));
+        print("Content : %r \n" % body);
 
     # Define a consumer behaviour
     channel.basic_consume(callback,
@@ -41,7 +45,3 @@ def read():
     # Wait for incomes
     print("Waiting for incomes ... (Ctrl+C to quit)");
     channel.start_consuming();
-
-
-# If run from Shell, execute:
-read();

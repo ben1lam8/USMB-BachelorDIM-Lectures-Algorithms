@@ -8,8 +8,8 @@
 import imp;
 import argparse;
 
-simple_queue_publish = imp.load_source('S4_simple_queue_publish', 'assignments/Session4/S4_simple_queue_publish.py');
-simple_queue_read = imp.load_source('S4_simple_queue_read', 'assignments/Session4/S4_simple_queue_read.py');
+simple_queue_publish = imp.load_source('simple_queue_publish', 'assignments/Session4/simple_queue_publish.py');
+simple_queue_read = imp.load_source('simple_queue_read', 'assignments/Session4/simple_queue_read.py');
 
 
 def execute():

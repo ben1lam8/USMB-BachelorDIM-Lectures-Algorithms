@@ -39,6 +39,3 @@ def publish():
 
     # Disconnect
     connection.close();
-
-# If run from Shell, execute:
-publish();
