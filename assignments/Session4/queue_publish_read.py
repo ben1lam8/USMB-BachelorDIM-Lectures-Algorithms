@@ -5,25 +5,25 @@
 #
 # @author Benoit Lamit, LPro DIM, IUT Annecy le vieux, FRANCE
 
-import imp;
 import argparse;
+import subprocess;
 
-simple_queue_publish = imp.load_source('simple_queue_publish', 'assignments/Session4/simple_queue_publish.py');
-simple_queue_read = imp.load_source('simple_queue_read', 'assignments/Session4/simple_queue_read.py');
+# Parse command line arguments
+parser = argparse.ArgumentParser();
+parser.add_argument("-r", "-read", action="store_true", help="Start a reader");
+parser.add_argument("-t", "-test", action="store_true", help="Play a concurrency test scenario");
+args = parser.parse_args();
 
+if args.t:
+    # FIX : Find a better way to launch subprocesses and print their outputs
+    # Launch 1 provider (don't forget to provide a message content ...)
+    subprocess.check_output("python simple_queue_publish.py -c -n 25", shell=True);
 
-def execute():
+    # Launch 2 readers
+    subprocess.check_output("python simple_queue_read.py -c", shell=True);
+    subprocess.check_output("python simple_queue_read.py -c", shell=True);
 
-    # Get the parser instance
-    parser = argparse.ArgumentParser();
-    parser.add_argument("-read", action="store_true");
-    args = parser.parse_args();
-
-    if args.read:
-        simple_queue_read.read();
-    else:
-        simple_queue_publish.publish();
-
-
-# If run from Shell, execute:
-execute();
+elif args.r:
+    execfile('simple_queue_read.py');
+else:
+    execfile('simple_queue_publish.py');
