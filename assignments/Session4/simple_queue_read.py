@@ -27,12 +27,10 @@ def read():
     channel.queue_declare(queue=queue_name);
 
     # Define a callback
-    count = 0;
 
     def callback(ch, method, properties, body):
-        global count;
-        count += 1;
-        print("--- Incoming message (num {c}) ---".format(c=count));
+
+        print("--- Message received ---");
         print("Content : %r" % body);
 
     # Define a consumer behaviour
