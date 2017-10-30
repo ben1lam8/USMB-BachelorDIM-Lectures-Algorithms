@@ -9,6 +9,8 @@
 import pika;
 import os;
 import uuid;
+import msgpack;
+import msgpack_numpy;
 
 
 # Configure connection and message
@@ -21,7 +23,6 @@ params = pika.URLParameters(full_url);
 params.socket_timeout = 5;
 
 request_queue_name="rpc_queue"
-request_content = "Hi, how are you ?";
 
 corr_id = str(uuid.uuid4());
 
@@ -35,13 +36,17 @@ channel = connection.channel();
 result = channel.queue_declare(exclusive=True);
 callback_queue = result.method.queue;
 
+# Write the request
+request_content = {'type': 0, 'value': 'Hi, how are you ?'}
+encoded_request = msgpack.packb(request_content, default=msgpack_numpy.encode)
+
 # Publish on the request queue
 channel.basic_publish(exchange='',
                       routing_key='rpc_queue',
                       properties=pika.BasicProperties(
                           reply_to=callback_queue,
                           correlation_id=corr_id, ),
-                      body=request_content);
+                      body=encoded_request);
 
 # Report he request
 print("--- Request published ---\n");
@@ -50,7 +55,7 @@ print("Request content : {b}".format(b=request_content));
 
 # --- STEP 2 : WAIT FOR A RESPONSE
 
-response_content = None;
+decoded_response = None;
 
 
 ## The callback method, launched on every response consumption.
@@ -63,12 +68,12 @@ def on_response(ch, method, properties, body):
     if corr_id == properties.correlation_id:
 
         # Report the response
-        global response_content;
-        response_content = str(body);
+        global decoded_response;
+        decoded_response = msgpack.unpackb(body, object_hook=msgpack_numpy.decode);
 
         print("--- Response received ---\n");
         print("Source queue : {ip}.{q}".format(ip=instance_provider, q=callback_queue));
-        print("Response content : {b}".format(b=response_content));
+        print("Response content : {b}".format(b=decoded_response));
 
     else:
         raise ValueError('Warning : the client received a corrupted response');
@@ -86,7 +91,7 @@ channel.basic_consume(on_response,
                       no_ack=True,
                       queue=callback_queue);
 
-while response_content is None:
+while decoded_response is None:
     connection.process_data_events();
 
 # Disconnect

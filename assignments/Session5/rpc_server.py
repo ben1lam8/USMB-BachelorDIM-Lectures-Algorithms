@@ -7,7 +7,8 @@
 
 import pika;
 import os;
-
+import msgpack;
+import msgpack_numpy;
 
 # Configure connection
 instance_provider = "CloudAMQP";
@@ -33,14 +34,22 @@ channel.queue_declare(queue=queue_name);
 # @param properties
 # @param body unneeded body of the request
 def on_request(ch, method, properties, body):
-    print("Request Received. Responding...");
-    response = 'Fine and you ?';
+
+    print("Request Received. Reading...");
+    decoded_request = msgpack.unpackb(body, object_hook=msgpack_numpy.decode);
+    print("Request content : %r" % decoded_request);
+
+    response_content = {'type': 1, 'value': 'Fine and you ?'};
+    encoded_response = msgpack.packb(response_content, default=msgpack_numpy.encode);
+    print("Response content : %r" % response_content);
+
     ch.basic_publish(exchange='',
                      routing_key=properties.reply_to,
                      properties=pika.BasicProperties(
                          correlation_id=properties.correlation_id),
-                     body=str(response));
+                     body=encoded_response);
     ch.basic_ack(delivery_tag=method.delivery_tag); #Acknowledge
+
     print("Response sent.");
 
 
