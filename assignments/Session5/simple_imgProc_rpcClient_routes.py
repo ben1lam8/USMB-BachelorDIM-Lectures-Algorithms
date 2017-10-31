@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
-## @namespace S5_rpc_client
-# A client-side script that publish RPC requests
+## @namespace S5_simple_imgProc_rpcClient_routes
+# A client-side script that publish images as RPC requests
+# The anonymous response queue could be disconnected if the input image leads to a long server-side process...
 #
 # @author Benoit Lamit, LPro DIM, IUT Annecy le vieux, FRANCE
 
@@ -11,6 +12,8 @@ import os;
 import uuid;
 import msgpack;
 import msgpack_numpy;
+import cv2;
+import random;
 
 
 # Configure connection and message
@@ -22,36 +25,49 @@ full_url = os.environ.get('CLOUDAMQP_URL', instance_url);
 params = pika.URLParameters(full_url);
 params.socket_timeout = 5;
 
-request_queue_name = "rpc_queue";
-
+exchange_name = 'imgProc';
 corr_id = str(uuid.uuid4());
 
-# --- STEP 1 : EMIT A REQUEST
+# --- STEP 1 : EMIT A REQUEST ON A FILTER QUEUE
 
-# Connect to request queue
+# Manage filters and select one
+filter_types = {
+    "invert": "invert image colors",
+    "threshold": "threshold an image"};
+lucky_filter = random.choice(list(filter_types));
+print("Lucky filter : {lf}".format(lf=lucky_filter));
+
+# Connect to exchange, create queues and bindings
 connection = pika.BlockingConnection(params);
 channel = connection.channel();
+
+channel.exchange_declare(exchange=exchange_name,
+                         exchange_type='direct');
+
+for key, value in filter_types.iteritems():
+    channel.queue_bind(exchange=exchange_name,
+                       queue=key,
+                       routing_key=key);
 
 # Create an anonymous queue for the server response
 result = channel.queue_declare(exclusive=True);
 callback_queue = result.method.queue;
 
 # Write the request
-request_content = {'type': 0, 'value': 'Hi, how are you ?'}
+request_content = cv2.imread('assignments/Session5/myimage2.jpeg', 1);
 encoded_request = msgpack.packb(request_content, default=msgpack_numpy.encode)
 
-# Publish on the request queue
-channel.basic_publish(exchange='',
-                      routing_key=request_queue_name,
+# Publish on the corresponding queue
+channel.basic_publish(exchange=exchange_name,
+                      routing_key=lucky_filter,
                       properties=pika.BasicProperties(
                           reply_to=callback_queue,
                           correlation_id=corr_id, ),
                       body=encoded_request);
 
 # Report he request
-print("--- Request published ---\n");
-print("Destination Queue : {ip}.{q}".format(ip=instance_provider, q=request_queue_name));
-print("Request content : {b}".format(b=request_content));
+print("--- Image published ---\n");
+print("Destination Queue : {ip}.{q}".format(ip=instance_provider, q=lucky_filter));
 
 # --- STEP 2 : WAIT FOR A RESPONSE
 
@@ -71,9 +87,11 @@ def on_response(ch, method, properties, body):
         global decoded_response;
         decoded_response = msgpack.unpackb(body, object_hook=msgpack_numpy.decode);
 
-        print("--- Response received ---\n");
-        print("Source queue : {ip}.{q}".format(ip=instance_provider, q=callback_queue));
-        print("Response content : {b}".format(b=decoded_response));
+        print("--- Image received ---\n");
+        print(decoded_response);
+        print("Displaying the response...");
+        cv2.imshow("Transformed image", decoded_response);
+        cv2.waitKey(0);
 
     else:
         raise ValueError('Warning : the client received a corrupted response');

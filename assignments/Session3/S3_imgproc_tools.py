@@ -19,6 +19,7 @@ cv2.imshow("BGR image", img_bgr);
 cv2.waitKey();
 """
 
+
 ## Invert the value of each pixel on each color canal
 #
 # @param input_img : a numpy array holding the input image data
@@ -52,6 +53,7 @@ def invert_colors_manual(input_img):
                 output_img[x][y] = 255 - input_img[x][y];
 
     return output_img;
+
 
 ## Apply a threshold for the value of each pixel on each color channel
 #
@@ -101,6 +103,7 @@ def threshold_image_manual(input_img, threshold):
                 output_img[x][y] = 255 if input_img[x][y] >= threshold else 0;
 
     return output_img;
+
 
 ## Apply a threshold for the value of each pixel on each color channel. Uses the numpy library.
 #

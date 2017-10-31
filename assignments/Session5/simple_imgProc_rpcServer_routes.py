@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-## @namespace S5_rpc_server
-# A server-side script that handles RPC requests
+## @namespace S5_simple_imgProc_rpcServer_routes
+# A server-side script that handles images as RPC requests and process them
 #
 # @author Benoit Lamit, LPro DIM, IUT Annecy le vieux, FRANCE
 
@@ -9,6 +9,14 @@ import pika;
 import os;
 import msgpack;
 import msgpack_numpy;
+import argparse;
+import imp;
+imgproc_tools = imp.load_source('S3_imgproc_tools', 'assignments/Session3/S3_imgproc_tools.py');
+
+# Parse command line arguments
+parser = argparse.ArgumentParser();
+parser.add_argument('-q', '-queue', action='store', dest='queue', help='The queue to subscribe to');
+args = parser.parse_args();
 
 # Configure connection
 instance_provider = "CloudAMQP";
@@ -19,7 +27,7 @@ full_url = os.environ.get('CLOUDAMQP_URL', instance_url);
 params = pika.URLParameters(full_url);
 params.socket_timeout = 5;
 
-request_queue_name = "rpc_queue";
+request_queue_name = args.queue;
 
 connection = pika.BlockingConnection(params);
 
@@ -37,11 +45,18 @@ def on_request(ch, method, properties, body):
 
     print("Request Received. Reading...");
     decoded_request = msgpack.unpackb(body, object_hook=msgpack_numpy.decode);
-    print("Request content : %r" % decoded_request);
 
-    response_content = {'type': 1, 'value': 'Fine and you ?'};
+    print("Processing the image...")
+
+    if request_queue_name == "invert":
+        response_content = imgproc_tools.invert_colors_manual(decoded_request);
+    elif request_queue_name == "threshold":
+        response_content = imgproc_tools.threshold_colors_opencv(decoded_request)[1];
+    else:
+        raise ValueError('Route not supported yet');
+
+    print("Image processed. Writing response...");
     encoded_response = msgpack.packb(response_content, default=msgpack_numpy.encode);
-    print("Response content : %r" % response_content);
 
     ch.basic_publish(exchange='',
                      routing_key=properties.reply_to,
